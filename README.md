@@ -8,15 +8,25 @@ It is based on spacy NER model, you can find the models under the root/model dir
 
 
 
-`parser = AddressParser(PATH_TO_MODEL)`
+```python
+from addressparser import AddressParser
 
-`address = 'Cibadak Kec. Astanaanyar Kota Bandung, Jawa Barat 40241 Jl. Jend. Sudirman No.198'`
+parser = AddressParser(PATH_TO_MODEL)
 
-`print(address.parse_address(address))`
+address = 'Cibadak Kec. Astanaanyar Kota Bandung, Jawa Barat 40241 Jl. Jend. Sudirman No.198'
+
+print(address.parse_address(address))
+```
+
+
 
 Output:
 
-`{'village': 'Cibadak', 'district': 'Kec. Astanaanyar', 'city': 'Kota Bandung', 'province': 'Jawa Barat', 'postal code': '40241', 'street': 'Jl. Jend. Sudirman', 'house number': 'No.198'}`
+```json
+{'village': 'Cibadak', 'district': 'Kec. Astanaanyar', 'city': 'Kota Bandung', 'province': 'Jawa Barat', 'postal code': '40241', 'street': 'Jl. Jend. Sudirman', 'house number': 'No.198'}
+```
+
+
 
 
 
