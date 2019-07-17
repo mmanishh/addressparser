@@ -15,7 +15,7 @@ parser = AddressParser(PATH_TO_MODEL)
 
 address = 'Cibadak Kec. Astanaanyar Kota Bandung, Jawa Barat 40241 Jl. Jend. Sudirman No.198'
 
-print(address.parse_address(address))
+print(parser.parse_address(address))
 ```
 
 
