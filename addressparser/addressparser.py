@@ -15,8 +15,6 @@ class AddressParser:
         # Find named entities, phrases and concepts
         for ent in doc.ents:
             start, end = ent.start_char, ent.end_char
-            #print('start:{0},end:{1}'.format(start,end))
-            #print('text:',addr[start:end], 'label:',ent.label_)
             result[ent.label_] = addr[start:end]
 
         return result
