@@ -1,5 +1,6 @@
 import spacy
 import os
+import pandas as pd
 
 class AddressParser:
 
@@ -9,8 +10,14 @@ class AddressParser:
     
 
     def parse_address(self,addr):
+        """
+        Function to parse single string address
+        Params:
+        addr = string address to parse
+        Returns: parsed address in json format
+        """
         model = self.nlp
-        doc = model(addr.lower())
+        doc = model(str(addr).lower())
         result = {}
         # Find named entities, phrases and concepts
         for ent in doc.ents:
@@ -18,5 +25,28 @@ class AddressParser:
             result[ent.label_] = addr[start:end]
 
         return result
+
+    def parse_csv(self,file_path,cols,nrows=1000):
+        """
+        function to parse whole csv file for the specified cols
+        params:
+        nrows = no. of rows to load in dataframe
+        file_path = file path of csv file
+        cols = list of column index/col name to parse  
+        returns : Parsed DataFrame
+        """
+        df = pd.read_csv(file_path,nrows=nrows,delimiter=';', error_bad_lines = False)
+        
+        for col in cols:
+            if isinstance(col,int):
+                new_col = colname = df.columns[col]+'_parsed'
+                df[new_col] = df.iloc[:,col].apply(self.parse_address)
+            else:
+                new_col = colname = col+'_parsed'
+                df[new_col] = df[col].apply(self.parse_address)
+           
+
+        return df
+
 
 
