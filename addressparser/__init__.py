@@ -1,1 +1,1 @@
-from .addressparser import AddressParser
+from .core import AddressParser
