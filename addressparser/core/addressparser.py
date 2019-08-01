@@ -26,7 +26,7 @@ class AddressParser:
 
         return result
 
-    def parse_csv(self,file_path,cols,nrows=1000):
+    def parse_csv(self,file_path,cols,nrows=1000,delimiter=','):
         """
         function to parse whole csv file for the specified cols
         params:
@@ -35,7 +35,7 @@ class AddressParser:
         cols = list of column index/col name to parse  
         returns : Parsed DataFrame
         """
-        df = pd.read_csv(file_path,nrows=nrows,delimiter=';', error_bad_lines = False)
+        df = pd.read_csv(file_path,nrows=nrows,delimiter=delimiter, error_bad_lines = False)
         
         for col in cols:
             if isinstance(col,int):
