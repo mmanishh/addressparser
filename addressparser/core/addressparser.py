@@ -42,10 +42,10 @@ class AddressParser:
 
         for col in cols:
             if isinstance(col, int):
-                new_col = colname = df.columns[col] + '_parsed'
+                new_col = df.columns[col] + '_parsed'
                 df[new_col] = df.iloc[:, col].apply(self.parse_address)
             else:
-                new_col = colname = col + '_parsed'
+                new_col = col + '_parsed'
                 df[new_col] = df[col].apply(self.parse_address)
 
         return df
