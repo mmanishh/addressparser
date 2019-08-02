@@ -7,10 +7,11 @@ def test_parse_address():
     tests the parse_address function of AddressParser
     :return:
     '''
-    address = 'Cibadak Kec. Astanaanyar Kota Bandung, Jawa Barat 40241 Jl. Jend. Sudirman No.198'
+    address = ['Cibadak Kec. Astanaanyar Kota Bandung, Jawa Barat 40241 Jl. Jend. Sudirman No.198','',1,1.23,None]
     parser = AddressParser()
-    result = parser.parse_address(address)
-    assert isinstance(result, dict)
+    for addr in address:
+        result = parser.parse_address(addr)
+        assert isinstance(result, dict)
 
 
 def test_parse_csv():
