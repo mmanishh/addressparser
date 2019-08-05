@@ -7,7 +7,7 @@ def test_parse_address():
     tests the parse_address function of AddressParser
     :return:
     '''
-    address = ['Cibadak Kec. Astanaanyar Kota Bandung, Jawa Barat 40241 Jl. Jend. Sudirman No.198','',1,1.23,None]
+    address = ['Cibadak Kec. Astanaanyar Kota Bandung, Jawa Barat 40241 Jl. Jend. Sudirman No.198', '', 1, 1.23, None]
     parser = AddressParser()
     for addr in address:
         result = parser.parse_address(addr)
@@ -19,5 +19,7 @@ def test_parse_csv():
     tests the parse_csv function of AddressParser
     :return:
     '''
-    result = AddressParser().parse_csv(file_path='data/2018-01-03.csv', cols=[3])
-    assert isinstance(result, pd.DataFrame)
+    files = ['sample3.csv', 'sample_semi.csv']
+    for file in files:
+        result = AddressParser().parse_csv(file_path='data/' + file, cols=[3, 6])
+        assert isinstance(result, pd.DataFrame)

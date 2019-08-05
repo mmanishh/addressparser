@@ -1,6 +1,7 @@
 import spacy
 import os
 import pandas as pd
+from pandas.errors import ParserError
 
 
 class AddressParser:
@@ -29,7 +30,7 @@ class AddressParser:
 
         return result
 
-    def parse_csv(self, file_path, cols, nrows=1000, seperator=';'):
+    def parse_csv(self, file_path, cols, nrows=1000, seperator=','):
         """
         function to parse whole csv file for the specified cols
         params:
@@ -38,8 +39,10 @@ class AddressParser:
         cols = list of column index/col name to parse  
         returns : Parsed DataFrame
         """
-        df = pd.read_csv(file_path, nrows=nrows, sep=seperator)
-
+        try:
+            df = pd.read_csv(file_path, nrows=nrows, sep=seperator)
+        except ParserError:
+            df = pd.read_csv(file_path, nrows=nrows, sep=';')
         for col in cols:
             if isinstance(col, int):
                 new_col = df.columns[col] + '_parsed'
