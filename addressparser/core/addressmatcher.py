@@ -22,7 +22,8 @@ class AddressMatcher:
         queries_list = [{k: v} for k, v in list(query.items())]
 
         # convert to elastic search friendly query. In the form :[{"term": {"city": "depok"}}]
-        params = list(map(lambda x: {"term": x}, queries_list))
+        # params = list(map(lambda x: {"term": x}, queries_list))
+        params = list(map(lambda x: {"match": x}, queries_list))
 
         return params
 
@@ -30,7 +31,18 @@ class AddressMatcher:
 
         params = self.generate_params(query)
 
-        result = self.es.search(index=self.index, body={'query': {
+        result = self.es.search(index=self.index, body={
+            "from": 0, "size": 50,
+            'query': {
+                "bool": {
+                    "must": params
+                }
+            }
+        })
+
+        '''
+        previously used query
+        {'query': {
             "bool": {
                 "filter": [
                     {
@@ -40,7 +52,7 @@ class AddressMatcher:
                     }
                 ]
             }
-        }})
+        }}'''
 
         return result['hits']['hits']
 
@@ -53,7 +65,7 @@ class AddressMatcher:
             score = 0
             for key in source:
                 score += fuzz.ratio(source[key], queries[key])
-            source['score'] = score/3
+            source['score'] = score/len(source)
             scores.append(source)
 
         return scores
