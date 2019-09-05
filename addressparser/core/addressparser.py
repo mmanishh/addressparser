@@ -10,11 +10,12 @@ class AddressParser:
         model_file_path = os.path.join(os.path.dirname(__file__), model_path)
         self.nlp = spacy.load(model_file_path)
 
-    def parse_address(self, addr):
+    def parse_address(self, addr, lang='id'):
         """
         Function to parse single string address
         Params:
         addr = string address to parse
+        lang = language for tag, id : indonesian
         Returns: parsed address in json format
         """
         if addr is None:
@@ -23,10 +24,40 @@ class AddressParser:
         addr = str(addr)
         doc = model(str(addr).lower())
         result = {}
-        # Find named entities, phrases and concepts
-        for ent in doc.ents:
-            start, end = ent.start_char, ent.end_char
-            result[ent.label_] = addr[start:end]
+
+        # change the tag name according to lang
+        if lang == 'id':
+            # Find named entities, phrases and concepts
+            for ent in doc.ents:
+                start, end = ent.start_char, ent.end_char
+                if ent.label_ == 'street':
+                    result['jalan'] = addr[start:end]
+                elif ent.label_ == 'other':
+                    result['lainnya'] = addr[start:end]
+                elif ent.label_ == 'house number':
+                    result['nomor_rumah'] = addr[start:end]
+                elif ent.label_ == 'locality':
+                    result['lokalitas'] = addr[start:end]
+                elif ent.label_ == 'name_company':
+                    result['nama_perusahaan'] = addr[start:end]
+                elif ent.label_ == 'postal code':
+                    result['kode_pos'] = addr[start:end]
+                elif ent.label_ == 'village':
+                    result['desa'] = addr[start:end]
+                elif ent.label_ == 'district':
+                    result['distrik'] = addr[start:end]
+                elif ent.label_ == 'city':
+                    result['kota'] = addr[start:end]
+                elif ent.label_ == 'regency':
+                    result['kabupaten'] = addr[start:end]
+                elif ent.label_ == 'province':
+                    result['provinsi'] = addr[start:end]
+                else:
+                    result[ent.label_] = addr[start:end]
+        else:
+            for ent in doc.ents:
+                start, end = ent.start_char, ent.end_char
+                result[ent.label_] = addr[start:end]
 
         return result
 
