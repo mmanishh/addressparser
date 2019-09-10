@@ -2,6 +2,7 @@ import spacy
 import os
 import pandas as pd
 from pandas.errors import ParserError
+from .. import config
 
 
 class AddressParser:
@@ -10,7 +11,7 @@ class AddressParser:
         model_file_path = os.path.join(os.path.dirname(__file__), model_path)
         self.nlp = spacy.load(model_file_path)
 
-    def parse_address(self, addr, lang='id'):
+    def parse_address(self, addr):
         """
         Function to parse single string address
         Params:
@@ -26,7 +27,7 @@ class AddressParser:
         result = {}
 
         # change the tag name according to lang
-        if lang == 'id':
+        if config.LANG == 'id':
             # Find named entities, phrases and concepts
             for ent in doc.ents:
                 start, end = ent.start_char, ent.end_char
@@ -67,7 +68,7 @@ class AddressParser:
         params:
         nrows = no. of rows to load in dataframe
         file_path = file path of csv file
-        cols = list of column index/col name to parse  
+        cols = list of column index/col name to parse
         returns : Parsed DataFrame
         """
         try:
